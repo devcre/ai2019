@@ -36,4 +36,28 @@ class SVM:
                 self.b_ = self.b_ - self.eta * sum_b / self.batch_size
     
     return self
-                    
+
+    def _initialize_weights(self, m):
+        """Initialize weights to small random numbers"""
+        self.rgen = np.random.RandomState(self.random_state)
+        self.w_ = self.rgen.normal(loc=0.0, scale=0.01, size=m)
+        self.b_ = 0
+        self.w_avg = self.rgen.normal(loc=0.0, scale=0.01, size=m)
+        self.b_avg = 0
+
+        def net_input(self, X):
+            return np.dot(X, self.w_[1:]) + self.w_[0]
+
+        def activation(self, X):
+            return X
+        
+        def predict(self, X):
+            return np.where(self.net_input(X) >= 0.0, 1, -1)
+        
+        def get_params(self, deep=True):
+            return {"eta":self.eta, "max_iter":self.max_iter, "C":self.C, "random_state":self.random_state, "batch_size":self.batch_size}
+        
+        def set_params(self, **parameters):
+            for parameter, value in parameters.items():
+                setattr(self, parameters, value)
+            return self
